@@ -274,15 +274,13 @@ KAMAL_REGISTRY_PASSWORD=$KAMAL_REGISTRY_PASSWORD
 
 ## Step 6 — CI/CD: .github/workflows/deploy.yml
 
-Every push to `main` triggers this workflow. It handles ECR authentication, SSH setup, root access provisioning, and the Kamal deploy automatically.
+It handles ECR authentication, SSH setup, root access provisioning, and the Kamal deploy automatically.
 
 ```yaml
 name: Deploy with Kamal
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
 
 jobs:
   deploy:
@@ -402,7 +400,7 @@ The IAM user only needs the following permissions. Policy and user already creat
 
 | Feature | Details |
 |---------|---------|
-| Auto-deploy | Every git push to main triggers a full build and deploy |
+| Auto-deploy | (Currently disabled) Every git push to main triggers a full build and deploy |
 | Web + Worker from one image | APP_ROLE env var determines which service the container runs |
 | Zero downtime | Old container stays live until the new one passes health checks |
 | ECR image registry | Docker images stored and versioned in AWS ECR |
@@ -440,4 +438,3 @@ The IAM user only needs the following permissions. Policy and user already creat
 - [ ] Add `KAMAL_REGISTRY_PASSWORD=$KAMAL_REGISTRY_PASSWORD` to `.kamal/secrets`
 - [ ] Add GitHub Secrets: `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `SSH_PRIVATE_KEY`
 - [ ] Add `.github/workflows/deploy.yml`
-- [ ] `git push` to main — every future push deploys automatically
